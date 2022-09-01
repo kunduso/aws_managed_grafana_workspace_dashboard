@@ -1,0 +1,20 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+variables:
+  - group: app-one
+  - name: region
+    value: 'us-east-2'
+
+trigger:
+  - add-scaffolding
+  
+pool:
+    vmImage: ubuntu-latest
+  
+steps:
+  - task: PowerShell@2
+    displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
+    inputs:
+      filePath: 'InstallAWSTools.ps1'
