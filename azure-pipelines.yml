@@ -67,6 +67,7 @@ stages:
           targetType: 'inline'
           script: |
             New-MGRFWorkspaceApiKey
+        continueOnError: true
       - task: PowerShell@2
         displayName: 'Check commandline options for existing key'
         inputs:
