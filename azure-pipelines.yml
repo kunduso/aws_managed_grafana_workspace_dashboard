@@ -62,8 +62,17 @@ stages:
         inputs:
           filePath: 'InstallAWSTools.ps1'
       - task: PowerShell@2
-        displayName: 'Check if Amazon ECR repository exists'
+        displayName: 'Check commandline options for new key'
         inputs:
           targetType: 'inline'
           script: |
             New-MGRFWorkspaceApiKey
+      - task: PowerShell@2
+        displayName: 'Check commandline options for existing key'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-MGRFWorkspaceApiKey
+
+
+            
