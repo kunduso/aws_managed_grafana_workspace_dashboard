@@ -13,51 +13,51 @@ trigger:
 pool:
     vmImage: ubuntu-latest
 
-    stages:
-      - stage: grafana-dashboard-deploy
-        displayName: Deploy Amazon Managed Grafana workspace
-        jobs:
-        - job: init
-          displayName: Terraform validate
-          pool:
-            vmImage: ubuntu-latest
-          steps:
-          # - task: PowerShell@2
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" -backend-config="key=tf/terraform-workspace-poc/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
-          #     workingDirectory: '$(build.sourcesdirectory)'
-          #   displayName: Terraform init
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: 'pip install checkov'
-            displayName: Install checkov
-          # - task: Bash@3
-          #   inputs:
-          #     targetType: 'inline'
-          #     workingDirectory: $(System.DefaultWorkingDirectory)
-          #     script: 'checkov -d . -o junitxml > scan-result.xml'
-          #   displayName: Checkov source code scan
-          #   continueOnError: true
-          # - task: PublishTestResults@2
-          #   inputs:
-          #     testResultsFormat: 'JUnit'
-          #     searchFolder: '$(System.DefaultWorkingDirectory)'
-          #     testResultsFiles: '**/*scan-result.xml'
-          #     mergeTestResults: false
-          #     testRunTitle: Terraform source code scan
-          #     failTaskOnFailedTests: false
-          #     publishRunAttachments: true
-          #   displayName: Publish Test Result
-      - stage: generate-api-key
-        displayName: Generate API generate-api-key
-        jobs:
-        - job: 
-          pool:
-            vmImage: ubuntu-latest
-          steps:
-          - task: PowerShell@2
-            displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
-            inputs:
-              filePath: 'InstallAWSTools.ps1'
+stages:
+  - stage: grafana-dashboard-deploy
+    displayName: Deploy Amazon Managed Grafana workspace
+    jobs:
+    - job: init
+      displayName: Terraform validate
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      # - task: PowerShell@2
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" -backend-config="key=tf/terraform-workspace-poc/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
+      #     workingDirectory: '$(build.sourcesdirectory)'
+      #   displayName: Terraform init
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'pip install checkov'
+        displayName: Install checkov
+      # - task: Bash@3
+      #   inputs:
+      #     targetType: 'inline'
+      #     workingDirectory: $(System.DefaultWorkingDirectory)
+      #     script: 'checkov -d . -o junitxml > scan-result.xml'
+      #   displayName: Checkov source code scan
+      #   continueOnError: true
+      # - task: PublishTestResults@2
+      #   inputs:
+      #     testResultsFormat: 'JUnit'
+      #     searchFolder: '$(System.DefaultWorkingDirectory)'
+      #     testResultsFiles: '**/*scan-result.xml'
+      #     mergeTestResults: false
+      #     testRunTitle: Terraform source code scan
+      #     failTaskOnFailedTests: false
+      #     publishRunAttachments: true
+      #   displayName: Publish Test Result
+  - stage: generate-api-key
+    displayName: Generate API generate-api-key
+    jobs:
+    - job: 
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: PowerShell@2
+        displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
+        inputs:
+          filePath: 'InstallAWSTools.ps1'
