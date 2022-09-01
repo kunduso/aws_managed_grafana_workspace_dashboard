@@ -14,7 +14,7 @@ pool:
     vmImage: ubuntu-latest
 
 stages:
-  - stage: grafana-dashboard-deploy
+  - stage: grafana_dashboard_deploy
     displayName: Deploy Amazon Managed Grafana workspace
     jobs:
     - job: init
@@ -50,7 +50,7 @@ stages:
       #     failTaskOnFailedTests: false
       #     publishRunAttachments: true
       #   displayName: Publish Test Result
-  - stage: generate-api-key
+  - stage: generate_api_key
     displayName: Generate API generate-api-key
     jobs:
     - job: 
