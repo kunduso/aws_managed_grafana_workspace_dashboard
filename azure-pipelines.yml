@@ -50,6 +50,32 @@ stages:
           failTaskOnFailedTests: false
           publishRunAttachments: true
         displayName: Publish Test Result
+
+      - task: PowerShell@2
+        inputs:  
+          targetType: 'inline'
+          script: 'terraform plan -var access_key=$(access_key) -var secret_key=$(secret_key) -out main.tfplan -no-color'
+          workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
+        displayName: "Terraform plan"
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_workspace            
+          script: |
+                  terraform show -json main.tfplan > main.json
+                    checkov -f main.json -o junitxml > Checkov-Plan-Report.xml
+        continueOnError: true
+        displayName: Checkov plan scan
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          searchFolder: '$(System.DefaultWorkingDirectory)/amg_workspace'
+          testResultsFiles: '**/*Checkov-Plan-Report.xml'
+          mergeTestResults: false
+          testRunTitle: Checkov Dev workspace plan scan
+          failTaskOnFailedTests: false
+          publishRunAttachments: true
+        displayName: Publish Test Result
   # - stage: generate_api_key
   #   displayName: Generate API Key
   #   jobs:
