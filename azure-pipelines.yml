@@ -28,52 +28,52 @@ stages:
           script: 'terraform init -backend-config="bucket=kunduso-terraform-remote-bucket" -backend-config="key=tf/managed-grafana/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: Terraform init
-  #     - task: Bash@3
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'pip install checkov'
+        displayName: Install checkov
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_workspace
+          script: 'checkov -d . -o junitxml > scan-result.xml'
+        displayName: Checkov source code scan
+        continueOnError: true
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          searchFolder: '$(System.DefaultWorkingDirectory)/amg_workspace'
+          testResultsFiles: '**/*scan-result.xml'
+          mergeTestResults: false
+          testRunTitle: Terraform source code scan
+          failTaskOnFailedTests: false
+          publishRunAttachments: true
+        displayName: Publish Test Result
+  # - stage: generate_api_key
+  #   displayName: Generate API Key
+  #   jobs:
+  #   - job: 
+  #     pool:
+  #       vmImage: ubuntu-latest
+  #     steps:
+  #     - task: PowerShell@2
+  #       displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
+  #       inputs:
+  #         filePath: 'InstallAWSTools.ps1'
+  #     - task: PowerShell@2
+  #       displayName: 'Check commandline options for new key'
   #       inputs:
   #         targetType: 'inline'
-  #         script: 'pip install checkov'
-  #       displayName: Install checkov
-  #     # - task: Bash@3
-  #     #   inputs:
-  #     #     targetType: 'inline'
-  #     #     workingDirectory: $(System.DefaultWorkingDirectory)
-  #     #     script: 'checkov -d . -o junitxml > scan-result.xml'
-  #     #   displayName: Checkov source code scan
-  #     #   continueOnError: true
-  #     # - task: PublishTestResults@2
-  #     #   inputs:
-  #     #     testResultsFormat: 'JUnit'
-  #     #     searchFolder: '$(System.DefaultWorkingDirectory)'
-  #     #     testResultsFiles: '**/*scan-result.xml'
-  #     #     mergeTestResults: false
-  #     #     testRunTitle: Terraform source code scan
-  #     #     failTaskOnFailedTests: false
-  #     #     publishRunAttachments: true
-  #     #   displayName: Publish Test Result
-  - stage: generate_api_key
-    displayName: Generate API Key
-    jobs:
-    - job: 
-      pool:
-        vmImage: ubuntu-latest
-      steps:
-      - task: PowerShell@2
-        displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
-        inputs:
-          filePath: 'InstallAWSTools.ps1'
-      - task: PowerShell@2
-        displayName: 'Check commandline options for new key'
-        inputs:
-          targetType: 'inline'
-          script: |
-            New-MGRFWorkspaceApiKey
-        continueOnError: true
-      - task: PowerShell@2
-        displayName: 'Check commandline options for existing key'
-        inputs:
-          targetType: 'inline'
-          script: |
-            Remove-MGRFWorkspaceApiKey
+  #         script: |
+  #           New-MGRFWorkspaceApiKey
+  #       continueOnError: true
+  #     - task: PowerShell@2
+  #       displayName: 'Check commandline options for existing key'
+  #       inputs:
+  #         targetType: 'inline'
+  #         script: |
+  #           Remove-MGRFWorkspaceApiKey
 
 
             
