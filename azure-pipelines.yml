@@ -26,7 +26,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: 'terraform init -backend-config="bucket=kunduso-terraform-remote-bucket" -backend-config="key=tf/managed-grafana/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
-          workingDirectory: '$(build.sourcesdirectory)\amg_workspace'
+          workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: Terraform init
   #     - task: Bash@3
   #       inputs:
