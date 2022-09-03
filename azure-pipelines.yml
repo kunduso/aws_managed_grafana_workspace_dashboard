@@ -58,7 +58,7 @@ stages:
         displayName: "Terraform plan"
     - job: approve
       dependsOn: initialize
-      condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Branch'], 'main'))
+      condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
       pool: server
       displayName: Wait for approval
       steps:
