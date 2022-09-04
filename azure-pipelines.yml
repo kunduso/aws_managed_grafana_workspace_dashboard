@@ -99,8 +99,8 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-          $OutputVariable = (terraform output aws_grafana_workspace_value) | Out-String
-          Write-Host $OutputVariable
+            $OutputVariable = (terraform output aws_grafana_workspace_value) | Out-String
+            Write-Host "Value of workspace: "+$OutputVariable
   # - stage: generate_api_key
   #   displayName: Generate API Key
   #   jobs:
