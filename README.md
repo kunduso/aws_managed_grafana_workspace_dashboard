@@ -1,1 +1,2 @@
+[![Build Status](https://littlecoding.visualstudio.com/Project-03/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard?branchName=add-scaffolding)](https://littlecoding.visualstudio.com/Project-03/_build/latest?definitionId=27&branchName=add-scaffolding)
 # aws_managed_grafana_workspace_dashboard
