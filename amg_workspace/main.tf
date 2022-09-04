@@ -8,7 +8,7 @@ resource "aws_grafana_workspace" "workspace" {
 }
 
 resource "aws_iam_role" "assume" {
-  name = "grafana-assume"
+  name = "tf-grafana-assume"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
