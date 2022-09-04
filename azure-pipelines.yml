@@ -8,8 +8,8 @@ variables:
     value: 'us-east-2'
 
 trigger:
-  - add-scaffolding
-  - main
+  - main 
+  - dev/api-key
 
 pool:
     vmImage: ubuntu-latest
@@ -87,30 +87,30 @@ stages:
           script: 'terraform apply -var region=$(region) -var access_key=$(access_key) -var secret_key=$(secret_key) --auto-approve -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: "Terraform apply"
-  # - stage: generate_api_key
-  #   displayName: Generate API Key
-  #   jobs:
-  #   - job: 
-  #     pool:
-  #       vmImage: ubuntu-latest
-  #     steps:
-  #     - task: PowerShell@2
-  #       displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
-  #       inputs:
-  #         filePath: 'InstallAWSTools.ps1'
-  #     - task: PowerShell@2
-  #       displayName: 'Check commandline options for new key'
-  #       inputs:
-  #         targetType: 'inline'
-  #         script: |
-  #           New-MGRFWorkspaceApiKey
-  #       continueOnError: true
-  #     - task: PowerShell@2
-  #       displayName: 'Check commandline options for existing key'
-  #       inputs:
-  #         targetType: 'inline'
-  #         script: |
-  #           Remove-MGRFWorkspaceApiKey
+  - stage: generate_api_key
+    displayName: Generate API Key
+    jobs:
+    - job: 
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+      - task: PowerShell@2
+        displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
+        inputs:
+          filePath: 'InstallAWSTools.ps1'
+      - task: PowerShell@2
+        displayName: 'Check commandline options for new key'
+        inputs:
+          targetType: 'inline'
+          script: |
+            New-MGRFWorkspaceApiKey
+        continueOnError: true
+      - task: PowerShell@2
+        displayName: 'Check commandline options for existing key'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-MGRFWorkspaceApiKey
 
 
             
