@@ -136,14 +136,14 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile)
+              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile) -Region $(region)
           continueOnError: true
         - task: PowerShell@2
           displayName: 'Check commandline options for existing key'
           inputs:
             targetType: 'inline'
             script: |
-              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile)
+              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Region $(region)
         - task: PowerShell@2
           displayName: 'Remove AWS Credentail'
           inputs:
