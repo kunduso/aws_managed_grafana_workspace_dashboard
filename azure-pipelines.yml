@@ -94,7 +94,7 @@ stages:
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: "Terraform output"
       - task: PowerShell@2
-        displayName: 'running from inline'
+        displayName: "running from inline"
         workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         inputs:
           targetType: 'inline'
