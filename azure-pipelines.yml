@@ -106,7 +106,7 @@ stages:
       dependsOn: apply
       pool:
         vmImage: ubuntu-latest
-      displayName: Reading variables
+      displayName: "Reading variables"
       variables:
         workspaceId: $[ dependencies.apply.outputs['passOutput.WorkspaceID'] ]
       steps:
@@ -126,7 +126,7 @@ stages:
         grafana-id-from-job: $[ stageDependencies.grafana_dashboard_deploy.apply.outputs['passOutput.WorkspaceID']]
       steps:
         - task: PowerShell@2
-          name: 
+          name: readVariable
           inputs:
             targetType: 'inline'
             script: |
