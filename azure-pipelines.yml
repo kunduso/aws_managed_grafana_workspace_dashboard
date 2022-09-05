@@ -129,7 +129,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: 'Set-AWSCredential -AccessKey $(access_key) `
-                      -SecretKey $(access_key) `
+                      -SecretKey $(secret_key) `
                       -StoreAs $(profile)'
         - task: PowerShell@2
           displayName: 'Check commandline options for new key'
