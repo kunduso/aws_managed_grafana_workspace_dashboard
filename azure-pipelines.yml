@@ -143,7 +143,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Region $(region)
+              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Region $(region) -Force
         - task: PowerShell@2
           displayName: 'Remove AWS Credentail'
           inputs:
