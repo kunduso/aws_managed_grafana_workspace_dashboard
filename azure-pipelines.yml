@@ -110,6 +110,7 @@ stages:
         vmImage: ubuntu-latest
       variables:
         GrafanaWorkspaceID: $[ stageDependencies.grafana_dashboard_deploy.apply.outputs['passOutput.WorkspaceID']]
+        KeyName: app-one
       steps:
         - task: PowerShell@2
           name: readVariable
@@ -134,7 +135,4 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              Remove-MGRFWorkspaceApiKey
-
-
-            
+              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) WorkspaceId $(GrafanaWorkspaceID)
