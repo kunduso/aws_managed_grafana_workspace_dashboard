@@ -6,7 +6,8 @@ variables:
   - group: app-one
   - name: region
     value: 'us-east-2'
-
+  - name: profile
+    value: 'GrafanaWorkspaceProfile'
 trigger:
   - add-scaffolding
   - main
@@ -124,6 +125,13 @@ stages:
           inputs:
             filePath: 'InstallAWSTools.ps1'
         - task: PowerShell@2
+          displayName: 'Set AWS Credentail'
+          inputs:
+            targetType: 'inline'
+            script: 'Set-AWSCredential -AccessKey $(app-one.AccessKey) `
+                      -SecretKey $(app-one.SecretKey) `
+                      -StoreAs $(profile)'
+        - task: PowerShell@2
           displayName: 'Check commandline options for new key'
           inputs:
             targetType: 'inline'
@@ -136,3 +144,9 @@ stages:
             targetType: 'inline'
             script: |
               Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID)
+        - task: PowerShell@2
+          displayName: 'Remove AWS Credentail'
+          inputs:
+            targetType: 'inline'
+            script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
+          condition: always()
