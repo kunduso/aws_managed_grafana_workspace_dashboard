@@ -108,13 +108,13 @@ stages:
         vmImage: ubuntu-latest
       displayName: Reading variables
       variables:
-        workspace_id: $[ dependencies.apply.outputs['passOutput.WorkspaceID'] ]
+        workspaceId: $[ dependencies.apply.outputs['passOutput.WorkspaceID'] ]
       steps:
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
           script: |
-            Write-Host "Value of workspace: $(workspace_id)"
+            Write-Host "Value of workspace: $(workspaceId)"
 
   - stage: generate_api_key
     displayName: Generate API Key
@@ -123,7 +123,7 @@ stages:
       pool:
         vmImage: ubuntu-latest
       variables:
-        grafana-id-from-job: $[stageDependencies.grafana_dashboard_deploy.apply.outputs['passOutput.WorkspaceID']]
+        grafana-id-from-job: $[ stageDependencies.grafana_dashboard_deploy.apply.outputs['passOutput.WorkspaceID']]
       steps:
         - task: PowerShell@2
           name: 
