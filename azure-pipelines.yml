@@ -102,7 +102,7 @@ stages:
             Write-Host "##vso[task.setvariable variable=WorkspaceID;isOutput=true]$OutputVariable"
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
           name: passOutput
-    - job: read-variable
+    - job: read_variable
       dependsOn: apply
       pool:
         vmImage: ubuntu-latest
