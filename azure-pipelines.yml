@@ -98,10 +98,11 @@ stages:
           targetType: 'inline'
           script: |
             $OutputVariable = (terraform output aws_grafana_workspace_value) | Out-String
-            Write-Host "Value of workspace:  $OutputVariable"
-            Write-Host "##vso[task.setvariable variable=WorkspaceID;isOutput=true]$OutputVariable"
+            Write-Host "Value of workspace:  $(OutputVariable)"
+            Write-Host "##vso[task.setvariable variable=WorkspaceID;isOutput=true]$(OutputVariable)"
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
-          name: passOutput
+        name: passOutput
+
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
