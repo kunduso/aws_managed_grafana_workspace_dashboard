@@ -101,6 +101,7 @@ stages:
             Write-Host "Value of workspace:  $OutputVariable"
             Write-Host "##vso[task.setvariable variable=WorkspaceID;isOutput=true]$OutputVariable"
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
+          name: passOutput
 
   - stage: generate_api_key
     displayName: Generate API Key
@@ -108,11 +109,15 @@ stages:
     - job: 
       pool:
         vmImage: ubuntu-latest
+      variables:
+        grafana-id-from-job: $[stageDependencies.grafana_dashboard_deploy.apply.outputs['passOutput.WorkspaceID']]
       steps:
-      - task: PowerShell@2
-        displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
-        inputs:
-          filePath: 'InstallAWSTools.ps1'
+        - task: PowerShell@2
+          name: 
+          inputs:
+            targetType: 'inline'
+            script: |
+              Write-Host "Value of workspace: $(grafana-id-from-job)"
 
       # - task: PowerShell@2
       # displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
