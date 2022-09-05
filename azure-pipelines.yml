@@ -94,10 +94,12 @@ stages:
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: "Terraform output"
       - task: PowerShell@2
-        workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         inputs:
           targetType: 'inline'
-          script: '$OutputVariable = (terraform output aws_grafana_workspace_value) | Out-String'
+          script: |
+            $OutputVariable = (terraform output aws_grafana_workspace_value) | Out-String
+            Write-Host "Value of workspace:  $OutputVariable"
+          workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: "running from inline"
   # - stage: generate_api_key
   #   displayName: Generate API Key
