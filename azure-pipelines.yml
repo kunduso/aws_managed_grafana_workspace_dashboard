@@ -128,8 +128,8 @@ stages:
           displayName: 'Set AWS Credentail'
           inputs:
             targetType: 'inline'
-            script: 'Set-AWSCredential -AccessKey $(app-one.AccessKey) `
-                      -SecretKey $(app-one.SecretKey) `
+            script: 'Set-AWSCredential -AccessKey $(access_key) `
+                      -SecretKey $(access_key) `
                       -StoreAs $(profile)'
         - task: PowerShell@2
           displayName: 'Check commandline options for new key'
