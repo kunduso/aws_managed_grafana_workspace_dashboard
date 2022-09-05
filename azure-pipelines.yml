@@ -136,7 +136,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              New-MGRFWorkspaceApiKey
+              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60
           continueOnError: true
         - task: PowerShell@2
           displayName: 'Check commandline options for existing key'
