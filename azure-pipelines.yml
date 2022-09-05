@@ -135,4 +135,4 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) WorkspaceId $(GrafanaWorkspaceID)
+              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID)
