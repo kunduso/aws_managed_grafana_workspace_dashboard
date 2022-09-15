@@ -2,22 +2,22 @@
 
 # AWS.Tools.Installer requires nuget package version 2.8.5.201 or above to be installed.
 $ListofPackagesInstalled = (Get-PackageProvider -ListAvailable).Name
-Write-Host "AWS.Tools.Installer requires nuget package version 2.8.5.201 or above to be installed. Checking if correct version of nuget package is installed."
-    if ($ListofPackagesInstalled -contains "Nuget")
-    {
-        Write-Host "Nuget package exists. Checking version."
-        $CheckNugetVersion=(get-PackageProvider -Name NuGet).Version
-        if($CheckNugetVersion -ge "2.8.5.201")
-        {
-            Write-Host "Nuget version is $CheckNugetVersion and that is acceptable."
-        }else {
-            Write-Host "Nuget version is $CheckNugetVersion and a newer package will be installed."
-            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-        }
-    } else {
-        Write-Host "Nugest package does not exists and will be installed."
-        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-    }
+# Write-Host "AWS.Tools.Installer requires nuget package version 2.8.5.201 or above to be installed. Checking if correct version of nuget package is installed."
+#     if ($ListofPackagesInstalled -contains "Nuget")
+#     {
+#         Write-Host "Nuget package exists. Checking version."
+#         $CheckNugetVersion=(get-PackageProvider -Name NuGet).Version
+#         if($CheckNugetVersion -ge "2.8.5.201")
+#         {
+#             Write-Host "Nuget version is $CheckNugetVersion and that is acceptable."
+#         }else {
+#             Write-Host "Nuget version is $CheckNugetVersion and a newer package will be installed."
+#             Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+#         }
+#     } else {
+#         Write-Host "Nugest package does not exists and will be installed."
+#         Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+#     }
 
 # Create a list of all modules installed and then identify if the required modules are already installed.
 $ListofModulesInstalled = (Get-InstalledModule).Name
