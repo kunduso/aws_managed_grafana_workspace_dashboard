@@ -135,18 +135,13 @@ stages:
           displayName: 'Set AWS Region'
           inputs:
             targetType: 'inline'
-            script: 'Set-DefaultAWSRegion -Region $(region)'
+            script: 'Set-DefaultAWSRegion'
+          continueOnError: true
         - task: PowerShell@2
           displayName: 'Get AWS DefaultRegion'
           inputs:
             targetType: 'inline'
             script: 'Get-DefaultAWSRegion'
-          continueOnError: true
-        - task: PowerShell@2
-          displayName: 'Get AWS Region'
-          inputs:
-            targetType: 'inline'
-            script: 'Get-AWSRegion'
           continueOnError: true
         # - task: PowerShell@2
         #   displayName: 'Check commandline options for new key'
