@@ -137,18 +137,30 @@ stages:
             targetType: 'inline'
             script: 'Set-DefaultAWSRegion -Region $(region)'
         - task: PowerShell@2
-          displayName: 'Check commandline options for new key'
+          displayName: 'Get AWS DefaultRegion'
           inputs:
             targetType: 'inline'
-            script: |
-              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile)
+            script: 'Get-DefaultAWSRegion'
           continueOnError: true
         - task: PowerShell@2
-          displayName: 'Check commandline options for existing key'
+          displayName: 'Get AWS Region'
           inputs:
             targetType: 'inline'
-            script: |
-              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Force
+            script: 'Get-AWSRegion'
+          continueOnError: true
+        # - task: PowerShell@2
+        #   displayName: 'Check commandline options for new key'
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: |
+        #       New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile)
+        #   continueOnError: true
+        # - task: PowerShell@2
+        #   displayName: 'Check commandline options for existing key'
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: |
+        #       Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Force
         - task: PowerShell@2
           displayName: 'Remove AWS Credentail'
           inputs:
