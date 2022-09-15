@@ -135,27 +135,28 @@ stages:
           displayName: 'Set AWS Region'
           inputs:
             targetType: 'inline'
-            script: 'Set-DefaultAWSRegion -Region us-east-2'
+            script: 'Set-DefaultAWSRegion -Region us-east-2 `
+            Get-DefaultAWSRegion'
           continueOnError: true
-        - task: PowerShell@2
-          displayName: 'Get AWS DefaultRegion'
-          inputs:
-            targetType: 'inline'
-            script: 'Get-DefaultAWSRegion'
-          continueOnError: true
-        - task: PowerShell@2
-          displayName: 'Check commandline options for new key'
-          inputs:
-            targetType: 'inline'
-            script: |
-              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile)
-          continueOnError: true
-        - task: PowerShell@2
-          displayName: 'Check commandline options for existing key'
-          inputs:
-            targetType: 'inline'
-            script: |
-              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Force
+        # - task: PowerShell@2
+        #   displayName: 'Get AWS DefaultRegion'
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: 'Get-DefaultAWSRegion'
+        #   continueOnError: true
+        # - task: PowerShell@2
+        #   displayName: 'Check commandline options for new key'
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: |
+        #       New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile)
+        #   continueOnError: true
+        # - task: PowerShell@2
+        #   displayName: 'Check commandline options for existing key'
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: |
+        #       Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Force
         - task: PowerShell@2
           displayName: 'Remove AWS Credentail'
           inputs:
