@@ -135,7 +135,7 @@ stages:
           displayName: 'Set AWS Region'
           inputs:
             targetType: 'inline'
-            script: 'Set-DefaultAWSRegion'
+            script: 'Set-DefaultAWSRegion -Region us-east-2'
           continueOnError: true
         - task: PowerShell@2
           displayName: 'Get AWS DefaultRegion'
