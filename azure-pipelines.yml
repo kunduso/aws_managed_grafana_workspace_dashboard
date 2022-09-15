@@ -132,18 +132,23 @@ stages:
                       -SecretKey $(secret_key) `
                       -StoreAs $(profile)'
         - task: PowerShell@2
+          displayName: 'Set AWS Region'
+          inputs:
+            targetType: 'inline'
+            script: 'Set-DefaultAWSRegion -Region $(region)'
+        - task: PowerShell@2
           displayName: 'Check commandline options for new key'
           inputs:
             targetType: 'inline'
             script: |
-              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile) -Region $(region)
+              New-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -KeyRole ADMIN -SecondsToLive 60 -ProfileName $(profile)
           continueOnError: true
         - task: PowerShell@2
           displayName: 'Check commandline options for existing key'
           inputs:
             targetType: 'inline'
             script: |
-              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Region $(region) -Force
+              Remove-MGRFWorkspaceApiKey -KeyName $(KeyName) -WorkspaceId $(GrafanaWorkspaceID) -ProfileName $(profile) -Force
         - task: PowerShell@2
           displayName: 'Remove AWS Credentail'
           inputs:
