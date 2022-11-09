@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket  = "kunduso-terraform-remote-bucket"
+    bucket  = "skundu-terraform-remote-state"
     encrypt = true
-    key     = "tf/managed-grafana/terraform.tfstate"
+    key     = "tf/managed-grafana/workspace/terraform.tfstate"
     region  = "us-east-2"
   }
 }
