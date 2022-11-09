@@ -5,6 +5,7 @@ resource "aws_grafana_workspace" "workspace" {
   authentication_providers = ["AWS_SSO"]
   permission_type          = "SERVICE_MANAGED"
   role_arn                 = aws_iam_role.assume.arn
+  data_sources             = ["CLOUDWATCH"]
 }
 
 resource "aws_iam_role" "assume" {
