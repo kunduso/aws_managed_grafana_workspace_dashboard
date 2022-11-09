@@ -27,7 +27,7 @@ stages:
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
-          script: 'terraform init -backend-config="bucket=skundu-terraform-remote-state" -backend-config="key=tf/managed-grafana/workspace/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
+          script: 'terraform init -backend-config="terraform-remote-bucket-skundu" -backend-config="key=tf/managed-grafana/workspace/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: Terraform init
       - task: Bash@3
@@ -79,7 +79,7 @@ stages:
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
-          script: 'terraform init -backend-config="bucket=skundu-terraform-remote-state" -backend-config="key=tf/managed-grafana/workspace/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
+          script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" -backend-config="key=tf/managed-grafana/workspace/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: Terraform init
       - task: PowerShell@2
