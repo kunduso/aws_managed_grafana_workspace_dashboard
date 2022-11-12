@@ -8,7 +8,6 @@ variables:
     value: 'us-east-2'
 
 trigger:
-  - add-scaffolding
   - main
   - dev/*
 
