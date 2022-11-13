@@ -8,8 +8,13 @@ variables:
     value: 'us-east-2'
 
 trigger:
-  - add-scaffolding
-  - main
+  branches:
+    include:
+      - main
+      - dev/*
+  paths:
+    include:
+      - /amg_dashboard/*
 
 pool:
     vmImage: ubuntu-latest
