@@ -12,7 +12,7 @@ trigger:
     include:
       - main
       - dev/*
-  path:
+  paths:
     include:
       - /amg_workspace/*
 
