@@ -8,8 +8,13 @@ variables:
     value: 'us-east-2'
 
 trigger:
-  - main
-  - dev/*
+  branches:
+    include:
+      - main
+      - dev/*
+  path:
+    include:
+      - /amg_workspace/*
 
 pool:
     vmImage: ubuntu-latest
