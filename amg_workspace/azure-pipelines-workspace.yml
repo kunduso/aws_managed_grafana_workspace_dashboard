@@ -21,7 +21,7 @@ pool:
     vmImage: ubuntu-latest
 
 stages:
-  - stage: grafana_dashboard_deploy
+  - stage: grafana_workspace_deploy
     displayName: Deploy Amazon Managed Grafana workspace
     jobs:
     - job: initialize
