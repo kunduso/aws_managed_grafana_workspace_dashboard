@@ -9,6 +9,8 @@ variables:
     value: 'us-east-2'
   - name: workspace
     value: 'g-ebf25ac499'
+  - name: profile
+    value: 'PSProfile'
 
 trigger:
   branches:
@@ -35,12 +37,29 @@ stages:
         inputs:
           filePath: '$(build.sourcesdirectory)/amg_dashboard/InstallAWSTools.ps1'
       - task: PowerShell@2
+        displayName: 'Set AWS Credentail'
+        inputs:
+          targetType: 'inline'
+          script: 'Set-AWSCredential -AccessKey $(access_key) `
+                    -SecretKey $(secret_key) `
+                    -StoreAs $(profile)'
+      - task: PowerShell@2
         displayName: 'Ensure key with same name does not already exist'
         inputs:
           targetType: 'inline'
           script: |
-            New-MGRFWorkspaceApiKey -KeyName "automation" -KeyRole "Admin" -SecondsToLive 600 -WorkspaceId $(workspace)
+            New-MGRFWorkspaceApiKey -KeyName "automation" `
+            -KeyRole "Admin" `
+            -SecondsToLive 600 `
+            -WorkspaceId $(workspace) `
+            -ProfileName $(profile)
         continueOnError: true
+      - task: PowerShell@2
+        displayName: 'Remove AWS Credentail'
+        inputs:
+          targetType: 'inline'
+          script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
+        condition: always()
       # - task: PowerShell@2
       #   displayName: 'Check commandline options for existing key'
       #   inputs:
