@@ -7,6 +7,8 @@ variables:
   - group: app-one
   - name: region
     value: 'us-east-2'
+  - name: workspace
+    value: 'g-ebf25ac499'
 
 trigger:
   branches:
@@ -32,13 +34,13 @@ stages:
         displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
         inputs:
           filePath: '$(build.sourcesdirectory)/amg_dashboard/InstallAWSTools.ps1'
-      # - task: PowerShell@2
-      #   displayName: 'Check commandline options for new key'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       New-MGRFWorkspaceApiKey
-      #   continueOnError: true
+      - task: PowerShell@2
+        displayName: 'Ensure key with same name does not already exist'
+        inputs:
+          targetType: 'inline'
+          script: |
+            New-MGRFWorkspaceApiKey -KeyName "automation" -KeyRole "Admin" -SecondsToLive 600 -WorkspaceId $(workspace)
+        continueOnError: true
       # - task: PowerShell@2
       #   displayName: 'Check commandline options for existing key'
       #   inputs:
