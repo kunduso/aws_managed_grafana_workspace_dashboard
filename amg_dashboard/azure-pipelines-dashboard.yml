@@ -52,6 +52,7 @@ stages:
             -KeyRole "Admin" `
             -SecondsToLive 600 `
             -WorkspaceId $(workspace) `
+            -Region $(region) `
             -ProfileName $(profile)
         continueOnError: true
       - task: PowerShell@2
