@@ -49,7 +49,7 @@ stages:
           targetType: 'inline'
           script: |
             New-MGRFWorkspaceApiKey -KeyName "automation" `
-            -KeyRole "Admin" `
+            -KeyRole ADMIN `
             -SecondsToLive 600 `
             -WorkspaceId $(workspace) `
             -Region $(region) `
