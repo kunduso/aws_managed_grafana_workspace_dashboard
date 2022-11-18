@@ -48,12 +48,14 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            New-MGRFWorkspaceApiKey -KeyName "automation" `
+            $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
             -KeyRole ADMIN `
             -SecondsToLive 600 `
             -WorkspaceId $(workspace) `
             -Region $(region) `
-            -ProfileName $(profile)
+            -ProfileName $(profile)) | Out-String
+            Write-Host "##vso[task.setvariable variable=Workspace_api_key;isOutput=true]$apikey"
+        name: passOutput
         continueOnError: true
       - task: PowerShell@2
         displayName: 'Remove AWS Credentail'
