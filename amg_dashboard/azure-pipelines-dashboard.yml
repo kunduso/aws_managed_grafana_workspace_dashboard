@@ -48,34 +48,41 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            Remove-MGRFWorkspaceApiKey -KeyName "automation" -WorkspaceId $(workspace) -Region $(region) -ProfileName $(profile)
+            Remove-MGRFWorkspaceApiKey
         continueOnError: true
-      - task: PowerShell@2
-        displayName: 'Create new api key'
-        inputs:
-          targetType: 'inline'
-          script: |
-            $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
-            -KeyRole ADMIN `
-            -SecondsToLive 600 `
-            -WorkspaceId $(workspace) `
-            -Region $(region) `
-            -ProfileName $(profile)) | Out-String
-            Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
-        name: passOutput
-      - task: PowerShell@2
-        displayName: 'Read variable'
-        inputs:
-          targetType: 'inline'
-          script: |
-            Write-Host "$(Workspace_api_key)"
-        condition: always()
-      - task: PowerShell@2
-        displayName: 'Remove AWS Credentail'
-        inputs:
-          targetType: 'inline'
-          script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
-        condition: always()
+      # - task: PowerShell@2
+      #   displayName: 'Create new api key'
+      #   inputs:
+      #     targetType: 'inline'
+      #       script: |
+      #         New-MGRFWorkspaceApiKey -KeyName "automation" `
+      #         -KeyRole ADMIN `
+      #         -SecondsToLive 600 `
+      #         -WorkspaceId $(workspace) `
+      #         -Region $(region) `
+      #         -ProfileName $(profile)
+      #     # script: |
+      #     #   $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
+      #     #   -KeyRole ADMIN `
+      #     #   -SecondsToLive 600 `
+      #     #   -WorkspaceId $(workspace) `
+      #     #   -Region $(region) `
+      #     #   -ProfileName $(profile)) | Out-String
+      #     #   Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
+      #   name: passOutput
+      # - task: PowerShell@2
+      #   displayName: 'Read variable'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       Write-Host "$(Workspace_api_key)"
+      #   condition: always()
+      # - task: PowerShell@2
+      #   displayName: 'Remove AWS Credentail'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
+      #   condition: always()
       # - task: PowerShell@2
       #   displayName: 'Check commandline options for existing key'
       #   inputs:
