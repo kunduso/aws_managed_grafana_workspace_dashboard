@@ -24,3 +24,9 @@ resource "aws_iam_role" "assume" {
     ]
   })
 }
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/grafana_role_association
+resource "aws_grafana_role_association" "role" {
+  role         = "ADMIN"
+  user_ids     = ["31ab1590-30e1-707c-287e-cc854904855d"]
+  workspace_id = aws_grafana_workspace.workspace.id
+}
