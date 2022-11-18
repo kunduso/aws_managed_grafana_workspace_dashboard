@@ -54,9 +54,17 @@ stages:
             -WorkspaceId $(workspace) `
             -Region $(region) `
             -ProfileName $(profile)) | Out-String
-            Write-Host "##vso[task.setvariable variable=Workspace_api_key;isOutput=true;issecret=true]$apikey"
+            #Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
         name: passOutput
         continueOnError: true
+
+      - task: PowerShell@2
+        displayName: 'Remove AWS Credentail'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Write-Host "$(Workspace_api_key)""
+        condition: always()
       - task: PowerShell@2
         displayName: 'Remove AWS Credentail'
         inputs:
