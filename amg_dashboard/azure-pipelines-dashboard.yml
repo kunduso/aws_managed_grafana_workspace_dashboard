@@ -59,11 +59,11 @@ stages:
         continueOnError: true
 
       - task: PowerShell@2
-        displayName: 'Remove AWS Credentail'
+        displayName: 'Read variable'
         inputs:
           targetType: 'inline'
           script: |
-            Write-Host "$(Workspace_api_key)""
+            Write-Host "$(Workspace_api_key)"
         condition: always()
       - task: PowerShell@2
         displayName: 'Remove AWS Credentail'
