@@ -48,7 +48,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            Remove-MGRFWorkspaceApiKey -KeyName "automation" -WorkspaceId $(workspace) -ProfileName $(profile) -Region $(region)
+            Remove-MGRFWorkspaceApiKey -KeyName "automation" -WorkspaceId $(workspace) -ProfileName $(profile) -Region $(region) -Force
         continueOnError: true
       # - task: PowerShell@2
       #   displayName: 'Create new api key'
