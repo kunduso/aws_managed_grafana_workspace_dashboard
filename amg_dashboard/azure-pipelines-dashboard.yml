@@ -54,7 +54,7 @@ stages:
             -WorkspaceId $(workspace) `
             -Region $(region) `
             -ProfileName $(profile)) | Out-String
-            Write-Host "##vso[task.setvariable variable=Workspace_api_key;isOutput=true]$apikey"
+            Write-Host "##vso[task.setvariable variable=Workspace_api_key;isOutput=true;issecret=true]$apikey"
         name: passOutput
         continueOnError: true
       - task: PowerShell@2
