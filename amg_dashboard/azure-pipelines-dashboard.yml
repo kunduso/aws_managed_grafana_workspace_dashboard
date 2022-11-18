@@ -44,7 +44,7 @@ stages:
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
       - task: PowerShell@2
-        displayName: 'Ensure key with same name does not already exist'
+        displayName: 'Create new api key'
         inputs:
           targetType: 'inline'
           script: |
@@ -54,7 +54,7 @@ stages:
             -WorkspaceId $(workspace) `
             -Region $(region) `
             -ProfileName $(profile)) | Out-String
-            #Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
+            Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
         name: passOutput
         continueOnError: true
 
