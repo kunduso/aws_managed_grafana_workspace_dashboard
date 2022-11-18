@@ -12,7 +12,7 @@ trigger:
   branches:
     include:
       - main
-      - dev/*
+      - dev/add-workspace
   paths:
     include:
       - /amg_workspace/*
