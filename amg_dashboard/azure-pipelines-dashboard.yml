@@ -44,6 +44,14 @@ stages:
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
       - task: PowerShell@2
+        displayName: 'Check and remove old key'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+            -WorkspaceId $(workspace)
+        continueOnError: true
+      - task: PowerShell@2
         displayName: 'Create new api key'
         inputs:
           targetType: 'inline'
@@ -56,8 +64,6 @@ stages:
             -ProfileName $(profile)) | Out-String
             Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
         name: passOutput
-        continueOnError: true
-
       - task: PowerShell@2
         displayName: 'Read variable'
         inputs:
