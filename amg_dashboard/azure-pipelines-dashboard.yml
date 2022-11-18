@@ -7,12 +7,16 @@ variables:
   - group: app-one
   - name: region
     value: 'us-east-2'
+  - name: workspace
+    value: 'g-ebf25ac499'
+  - name: profile
+    value: 'PSProfile'
 
 trigger:
   branches:
     include:
       - main
-      - dev/*
+      - dev/add-dashboard
   paths:
     include:
       - /amg_dashboard/*
@@ -32,13 +36,53 @@ stages:
         displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
         inputs:
           filePath: '$(build.sourcesdirectory)/amg_dashboard/InstallAWSTools.ps1'
+      - task: PowerShell@2
+        displayName: 'Set AWS Credentail'
+        inputs:
+          targetType: 'inline'
+          script: 'Set-AWSCredential -AccessKey $(access_key) `
+                    -SecretKey $(secret_key) `
+                    -StoreAs $(profile)'
+      - task: PowerShell@2
+        displayName: 'Check and remove old key'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-MGRFWorkspaceApiKey
+        continueOnError: true
       # - task: PowerShell@2
-      #   displayName: 'Check commandline options for new key'
+      #   displayName: 'Create new api key'
+      #   inputs:
+      #     targetType: 'inline'
+      #       script: |
+      #         New-MGRFWorkspaceApiKey -KeyName "automation" `
+      #         -KeyRole ADMIN `
+      #         -SecondsToLive 600 `
+      #         -WorkspaceId $(workspace) `
+      #         -Region $(region) `
+      #         -ProfileName $(profile)
+      #     # script: |
+      #     #   $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
+      #     #   -KeyRole ADMIN `
+      #     #   -SecondsToLive 600 `
+      #     #   -WorkspaceId $(workspace) `
+      #     #   -Region $(region) `
+      #     #   -ProfileName $(profile)) | Out-String
+      #     #   Write-Host "##vso[task.setvariable variable=Workspace_api_key;issecret=true]$apikey"
+      #   name: passOutput
+      # - task: PowerShell@2
+      #   displayName: 'Read variable'
       #   inputs:
       #     targetType: 'inline'
       #     script: |
-      #       New-MGRFWorkspaceApiKey
-      #   continueOnError: true
+      #       Write-Host "$(Workspace_api_key)"
+      #   condition: always()
+      # - task: PowerShell@2
+      #   displayName: 'Remove AWS Credentail'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
+      #   condition: always()
       # - task: PowerShell@2
       #   displayName: 'Check commandline options for existing key'
       #   inputs:
