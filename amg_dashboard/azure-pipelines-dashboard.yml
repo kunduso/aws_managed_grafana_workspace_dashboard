@@ -16,7 +16,7 @@ trigger:
   branches:
     include:
       - main
-      - dev/*
+      - dev/add-dashboard
   paths:
     include:
       - /amg_dashboard/*
