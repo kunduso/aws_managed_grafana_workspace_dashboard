@@ -7,7 +7,8 @@ variables:
   - group: app-one
   - name: region
     value: 'us-east-2'
-
+  - name: profile
+    value: 'GrafanaWorkspaceProfile'
 trigger:
   branches:
     include:
@@ -76,7 +77,7 @@ stages:
           instructions: 'Please validate the build configuration and resume'
           onTimeout: 'reject'
     - job: apply
-      dependsOn: approve
+      # dependsOn: approve
       pool:
         vmImage: ubuntu-latest
       displayName: Terraform apply
