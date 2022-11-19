@@ -8,7 +8,7 @@ variables:
   - name: region
     value: 'us-east-2'
   - name: workspace
-    value: 'g-ebf25ac499'
+    value: 'g-295a2eacac'
   - name: profile
     value: 'PSProfile'
 
@@ -37,30 +37,33 @@ stages:
         inputs:
           filePath: '$(build.sourcesdirectory)/amg_dashboard/InstallAWSTools.ps1'
       - task: PowerShell@2
-        displayName: 'Set AWS Credentail'
+        displayName: 'Set AWS Credentials'
         inputs:
           targetType: 'inline'
           script: 'Set-AWSCredential -AccessKey $(access_key) `
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
+      # - task: PowerShell@2
+      #   displayName: 'Check existing API Key'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+      #       -WorkspaceId $(workspace) `
+      #       -ProfileName $(profile) `
+      #       -Region $(region) -Force
+      #   continueOnError: true
       - task: PowerShell@2
-        displayName: 'Check and remove old key'
+        displayName: 'Create API key'
         inputs:
           targetType: 'inline'
           script: |
-            Remove-MGRFWorkspaceApiKey
-        continueOnError: true
-      # - task: PowerShell@2
-      #   displayName: 'Create new api key'
-      #   inputs:
-      #     targetType: 'inline'
-      #       script: |
-      #         New-MGRFWorkspaceApiKey -KeyName "automation" `
-      #         -KeyRole ADMIN `
-      #         -SecondsToLive 600 `
-      #         -WorkspaceId $(workspace) `
-      #         -Region $(region) `
-      #         -ProfileName $(profile)
+            New-MGRFWorkspaceApiKey -KeyName "automation" `
+            -KeyRole ADMIN `
+            -SecondsToLive 600 `
+            -WorkspaceId $(workspace) `
+            -Region $(region) `
+            -ProfileName $(profile)
       #     # script: |
       #     #   $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
       #     #   -KeyRole ADMIN `
@@ -77,18 +80,6 @@ stages:
       #     script: |
       #       Write-Host "$(Workspace_api_key)"
       #   condition: always()
-      # - task: PowerShell@2
-      #   displayName: 'Remove AWS Credentail'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
-      #   condition: always()
-      # - task: PowerShell@2
-      #   displayName: 'Check commandline options for existing key'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       Remove-MGRFWorkspaceApiKey
 
   # - stage: grafana_dashboard_deploy
   #   displayName: Deploy Amazon Managed Grafana dashboard
@@ -162,3 +153,20 @@ stages:
   #         script: 'terraform apply -var region=$(region) -var access_key=$(access_key) -var secret_key=$(secret_key) --auto-approve -no-color'
   #         workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
   #       displayName: "Terraform apply"
+      - task: PowerShell@2
+        displayName: 'Delete API Key'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+            -WorkspaceId $(workspace) `
+            -ProfileName $(profile) `
+            -Region $(region) -Force
+        condition: always()
+        continueOnError: true
+      - task: PowerShell@2
+        displayName: 'Remove AWS Credentials'
+        inputs:
+          targetType: 'inline'
+          script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
+        condition: always()
