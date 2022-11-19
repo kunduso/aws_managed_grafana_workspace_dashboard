@@ -8,7 +8,7 @@ variables:
   - name: region
     value: 'us-east-2'
   - name: workspace
-    value: 'g-ebf25ac499'
+    value: 'g-295a2eacac'
   - name: profile
     value: 'PSProfile'
 
@@ -44,23 +44,26 @@ stages:
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
       - task: PowerShell@2
-        displayName: 'Check and remove old key'
+        displayName: 'Check for existing key and remove'
         inputs:
           targetType: 'inline'
           script: |
-            Remove-MGRFWorkspaceApiKey -KeyName "automation" -WorkspaceId $(workspace) -ProfileName $(profile) -Region $(region) -Force
+            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+            -WorkspaceId $(workspace) `
+            -ProfileName $(profile) `
+            -Region $(region) -Force
         continueOnError: true
-      # - task: PowerShell@2
-      #   displayName: 'Create new api key'
-      #   inputs:
-      #     targetType: 'inline'
-      #       script: |
-      #         New-MGRFWorkspaceApiKey -KeyName "automation" `
-      #         -KeyRole ADMIN `
-      #         -SecondsToLive 600 `
-      #         -WorkspaceId $(workspace) `
-      #         -Region $(region) `
-      #         -ProfileName $(profile)
+      - task: PowerShell@2
+        displayName: 'Create new api key'
+        inputs:
+          targetType: 'inline'
+            script: |
+              New-MGRFWorkspaceApiKey -KeyName "automation" `
+              -KeyRole ADMIN `
+              -SecondsToLive 600 `
+              -WorkspaceId $(workspace) `
+              -Region $(region) `
+              -ProfileName $(profile)
       #     # script: |
       #     #   $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
       #     #   -KeyRole ADMIN `
@@ -162,3 +165,12 @@ stages:
   #         script: 'terraform apply -var region=$(region) -var access_key=$(access_key) -var secret_key=$(secret_key) --auto-approve -no-color'
   #         workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
   #       displayName: "Terraform apply"
+      - task: PowerShell@2
+        displayName: 'Check for existing key and remove'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+            -WorkspaceId $(workspace) `
+            -ProfileName $(profile) `
+            -Region $(region) -Force
