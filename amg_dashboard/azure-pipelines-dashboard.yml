@@ -81,7 +81,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            Write-Host "$(Workspace_api_key)"
+            Write-Host "$(api_key)"
       #   condition: always()
 
   # - stage: grafana_dashboard_deploy
