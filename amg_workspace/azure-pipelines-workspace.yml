@@ -7,7 +7,8 @@ variables:
   - group: app-one
   - name: region
     value: 'us-east-2'
-
+  - name: profile
+    value: 'GrafanaWorkspaceProfile'
 trigger:
   branches:
     include:
