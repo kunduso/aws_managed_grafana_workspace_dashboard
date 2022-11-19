@@ -1,7 +1,7 @@
 
-Amazon Managed Grafana Workspace:
+create_workspace_build:
 [![Build Status](https://littlecoding.visualstudio.com/Open-Project/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard?branchName=main)](https://littlecoding.visualstudio.com/Open-Project/_build/latest?definitionId=33&branchName=main)
-<br />Amazon Managed Grafana Workspace, dashboard:
+<br />create_dashboard_build:
 [![Build Status](https://littlecoding.visualstudio.com/Open-Project/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard.dashboard?branchName=main)](https://littlecoding.visualstudio.com/Open-Project/_build/latest?definitionId=34&branchName=main)
 ## Motivation
 In this repository I am adding the artifacts to build an Amazon Managed Grafana workspace and dashboard using Terraform. The process is automated using Azure Pipelines.
