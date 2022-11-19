@@ -43,18 +43,18 @@ stages:
           script: 'Set-AWSCredential -AccessKey $(access_key) `
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
+      # - task: PowerShell@2
+      #   displayName: 'Check existing API Key'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+      #       -WorkspaceId $(workspace) `
+      #       -ProfileName $(profile) `
+      #       -Region $(region) -Force
+      #   continueOnError: true
       - task: PowerShell@2
-        displayName: 'Check for existing key and remove'
-        inputs:
-          targetType: 'inline'
-          script: |
-            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
-            -WorkspaceId $(workspace) `
-            -ProfileName $(profile) `
-            -Region $(region) -Force
-        continueOnError: true
-      - task: PowerShell@2
-        displayName: 'Create new api key'
+        displayName: 'Create API key'
         inputs:
           targetType: 'inline'
           script: |
