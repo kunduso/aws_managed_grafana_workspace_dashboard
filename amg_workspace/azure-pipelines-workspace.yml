@@ -77,7 +77,8 @@ stages:
           instructions: 'Please validate the build configuration and resume'
           onTimeout: 'reject'
     - job: apply
-      # dependsOn: approve
+      dependsOn: approve
+      condition: and (succeeded(), eq(variables['Build.SourceBranchName'], 'main'))
       pool:
         vmImage: ubuntu-latest
       displayName: Terraform apply
