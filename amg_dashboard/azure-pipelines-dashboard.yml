@@ -33,7 +33,7 @@ stages:
         vmImage: ubuntu-latest
       steps:
       - task: PowerShell@2
-        displayName: 'Check and install AWS.Tools.Installer and AWS.Tools.Common modules'
+        displayName: 'Check and install AWS.Tools modules'
         inputs:
           filePath: '$(build.sourcesdirectory)/amg_dashboard/InstallAWSTools.ps1'
       - task: PowerShell@2
