@@ -57,13 +57,13 @@ stages:
         displayName: 'Create new api key'
         inputs:
           targetType: 'inline'
-            script: |
-              New-MGRFWorkspaceApiKey -KeyName "automation" `
-              -KeyRole ADMIN `
-              -SecondsToLive 600 `
-              -WorkspaceId $(workspace) `
-              -Region $(region) `
-              -ProfileName $(profile)
+          script: |
+            New-MGRFWorkspaceApiKey -KeyName "automation" `
+            -KeyRole ADMIN `
+            -SecondsToLive 600 `
+            -WorkspaceId $(workspace) `
+            -Region $(region) `
+            -ProfileName $(profile)
       #     # script: |
       #     #   $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
       #     #   -KeyRole ADMIN `
