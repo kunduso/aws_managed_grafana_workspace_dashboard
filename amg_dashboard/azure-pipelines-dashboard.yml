@@ -69,13 +69,13 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-              $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
+              $apikey= New-MGRFWorkspaceApiKey -KeyName "automation" `
               -KeyRole ADMIN `
               -SecondsToLive 600 `
               -WorkspaceId $(workspace) `
               -Region $(region) `
-              -ProfileName $(profile)) | Out-String
-            #  Write-Host "##vso[task.setvariable variable=apiho_key]$apikey"
+              -ProfileName $(profile) | Out-String
+              Write-Host "##vso[task.setvariable variable=api_key]$apikey"
       - task: PowerShell@2
         displayName: 'Read variable'
         inputs:
