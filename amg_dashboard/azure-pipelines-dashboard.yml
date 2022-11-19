@@ -75,7 +75,7 @@ stages:
               -WorkspaceId $(workspace) `
               -Region $(region) `
               -ProfileName $(profile)) | Out-String
-              Write-Host "##vso[task.setvariable variable=api_key]$apikey"
+            #  Write-Host "##vso[task.setvariable variable=apiho_key]$apikey"
       - task: PowerShell@2
         displayName: 'Read variable'
         inputs:
