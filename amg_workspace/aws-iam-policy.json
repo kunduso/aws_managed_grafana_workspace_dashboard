@@ -5,9 +5,16 @@
             "Effect": "Allow",
             "Action": [
                 "grafana:*",
-                "sso:DescribeRegisteredRegions",
                 "sso:CreateManagedApplicationInstance",
-                "sso:DeleteManagedApplicationInstance"
+                "sso:DescribeRegisteredRegions",
+                "sso:DeleteManagedApplicationInstance",
+                "sso:GetManagedApplicationInstance",
+                "sso:ListProfiles",
+                "sso:GetProfile",
+                "sso:ListDirectoryAssociations",
+                "sso:ListProfileAssociations",
+                "sso:AssociateProfile",
+                "sso:DisassociateProfile"
             ],
             "Resource": "*"
         },
