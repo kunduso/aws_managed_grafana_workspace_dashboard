@@ -76,12 +76,12 @@ stages:
               -Region $(region) `
               -ProfileName $(profile)) | Out-String
               Write-Host "##vso[task.setvariable variable=api_key;issecret=true]$apikey"
-      # - task: PowerShell@2
-      #   displayName: 'Read variable'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       Write-Host "$(Workspace_api_key)"
+      - task: PowerShell@2
+        displayName: 'Read variable'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Write-Host "$(Workspace_api_key)"
       #   condition: always()
 
   # - stage: grafana_dashboard_deploy
