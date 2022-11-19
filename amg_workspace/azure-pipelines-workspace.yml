@@ -63,7 +63,7 @@ stages:
           script: 'terraform plan -var access_key=$(access_key) -var secret_key=$(secret_key) -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: "Terraform plan"
-    - job: approve
+    - job: approval
       dependsOn: initialize
       condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
       pool: server
