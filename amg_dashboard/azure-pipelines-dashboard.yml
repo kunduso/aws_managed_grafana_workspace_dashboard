@@ -81,7 +81,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            Write-Host "Value of the key is $(api_key.key) and workspace is $(workspace)"
+            Write-Host "Value of the key is $api_key.Key and workspace is $(workspace)"
       #   condition: always()
 
   # - stage: grafana_dashboard_deploy
