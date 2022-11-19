@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "grafana:*",
+                "sso:CreateManagedApplicationInstance",
+                "sso:DescribeRegisteredRegions",
+                "sso:DeleteManagedApplicationInstance",
+                "sso:GetManagedApplicationInstance",
+                "sso:ListProfiles",
+                "sso:GetProfile",
+                "sso:ListDirectoryAssociations",
+                "sso:ListProfileAssociations",
+                "sso:AssociateProfile",
+                "sso:DisassociateProfile"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole",
+                "iam:ListInstanceProfilesForRole",
+                "iam:PassRole",
+                "iam:ListAttachedRolePolicies",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:ListRolePolicies"
+            ],
+            "Resource": "arn:aws:iam::${AWS-Account#}:role/tf-grafana-assume"
+        }
+    ]
+}
