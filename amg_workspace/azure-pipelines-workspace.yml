@@ -93,6 +93,3 @@ stages:
           script: 'terraform apply -var region=$(region) -var access_key=$(access_key) -var secret_key=$(secret_key) --auto-approve -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
         displayName: "Terraform apply"
-
-
-            
