@@ -25,8 +25,8 @@ pool:
     vmImage: ubuntu-latest
 
 stages:
-  - stage: generate_api_key
-    displayName: Generate API Key
+  - stage: initialize
+    displayName: Initialize and Review
     jobs:
     - job: 
       pool:
@@ -43,27 +43,6 @@ stages:
           script: 'Set-AWSCredential -AccessKey $(access_key) `
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
-      # - task: PowerShell@2
-      #   displayName: 'Check existing API Key'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       Remove-MGRFWorkspaceApiKey -KeyName "automation" `
-      #       -WorkspaceId $(workspace) `
-      #       -ProfileName $(profile) `
-      #       -Region $(region) -Force
-      #   continueOnError: true
-      # # - task: PowerShell@2
-      # #   displayName: 'Create API key'
-      # #   inputs:
-      # #     targetType: 'inline'
-      # #     script: |
-      # #       New-MGRFWorkspaceApiKey -KeyName "automation" `
-      # #       -KeyRole ADMIN `
-      # #       -SecondsToLive 600 `
-      # #       -WorkspaceId $(workspace) `
-      # #       -Region $(region) `
-      # #       -ProfileName $(profile)
       - task: PowerShell@2
         displayName: 'Create API key'
         inputs:
@@ -79,20 +58,34 @@ stages:
               # Write-Host "##vso[task.setvariable variable=api_key]$apikey"
               $Content = "grafana_workspace_auth = `"$apikey`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
               $Content | Out-File terraform.tfvars
-      # - task: PowerShell@2
-      #   displayName: 'Write variables into file'
-      #   inputs:
-      #     targetType: 'inline'
-      #     script: |
-      #       $Content = "grafana_workspace_auth = `"$(api_key)`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
-      #       $Content | Out-File terraform.tfvars
-      #     workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
           script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" -backend-config="key=tf/managed-grafana/dashboard/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_dashboard'
         displayName: Terraform init
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'pip install checkov'
+        displayName: Install checkov
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
+          script: 'checkov -d . -o junitxml > scan-result.xml'
+        displayName: Checkov source code scan
+        continueOnError: true
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          searchFolder: '$(System.DefaultWorkingDirectory)/amg_dashboard'
+          testResultsFiles: '**/*scan-result.xml'
+          mergeTestResults: false
+          testRunTitle: Terraform source code scan
+          failTaskOnFailedTests: false
+          publishRunAttachments: true
+        displayName: Publish Test Result
       - task: PowerShell@2
         inputs:  
           targetType: 'inline'
@@ -107,12 +100,6 @@ stages:
   #     pool:
   #       vmImage: ubuntu-latest
   #     steps:
-  #     - task: PowerShell@2
-  #       inputs:
-  #         targetType: 'inline'
-  #         script: 'terraform init -backend-config="bucket=kunduso-terraform-remote-bucket" -backend-config="key=tf/managed-grafana/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
-  #         workingDirectory: '$(build.sourcesdirectory)/amg_dashboard'
-  #       displayName: Terraform init
   #     - task: Bash@3
   #       inputs:
   #         targetType: 'inline'
@@ -135,12 +122,6 @@ stages:
   #         failTaskOnFailedTests: false
   #         publishRunAttachments: true
   #       displayName: Publish Test Result
-  #     - task: PowerShell@2
-  #       inputs:  
-  #         targetType: 'inline'
-  #         script: 'terraform plan -var access_key=$(access_key) -var secret_key=$(secret_key) -no-color'
-  #         workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
-  #       displayName: "Terraform plan"
   #   - job: approve
   #     dependsOn: initialize
   #     condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
