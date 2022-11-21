@@ -68,6 +68,7 @@ stages:
         displayName: 'Create API key'
         inputs:
           targetType: 'inline'
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
           script: |
               $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
               -KeyRole ADMIN `
@@ -75,15 +76,17 @@ stages:
               -WorkspaceId $(workspace) `
               -Region $(region) `
               -ProfileName $(profile)).Key
-              Write-Host "##vso[task.setvariable variable=api_key]$apikey"
-      - task: PowerShell@2
-        displayName: 'Write variables into file'
-        inputs:
-          targetType: 'inline'
-          script: |
-            $Content = "grafana_workspace_auth = `"$(api_key)`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
-            $Content | Out-File terraform.tfvars
-          workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
+              # Write-Host "##vso[task.setvariable variable=api_key]$apikey"
+              $Content = "grafana_workspace_auth = `"$(apikey)`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
+              $Content | Out-File terraform.tfvars
+      # - task: PowerShell@2
+      #   displayName: 'Write variables into file'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       $Content = "grafana_workspace_auth = `"$(api_key)`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
+      #       $Content | Out-File terraform.tfvars
+      #     workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
       - task: PowerShell@2
         inputs:
           targetType: 'inline'
