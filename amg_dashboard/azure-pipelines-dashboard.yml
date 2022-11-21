@@ -77,13 +77,21 @@ stages:
               -ProfileName $(profile)).Key
               Write-Host "##vso[task.setvariable variable=api_key]$apikey"
       - task: PowerShell@2
-        displayName: 'Read variable'
+        displayName: 'Write variables into file'
         inputs:
           targetType: 'inline'
           script: |
             Write-Host "Value of the key is $(api_key) and workspace is $(workspace)"
-      #   condition: always()
-
+            $Content = "auth = `"$(api_key)`" `nurl = `"$(workspace)`""
+            $Content | Out-File variables.tfvars
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
+      - task: PowerShell@2
+        displayName: 'Read file'
+        inputs:
+          targetType: 'inline'
+          script: |
+            Get-Content -Path .\variables.tfvars
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
   # - stage: grafana_dashboard_deploy
   #   displayName: Deploy Amazon Managed Grafana dashboard
   #   jobs:
