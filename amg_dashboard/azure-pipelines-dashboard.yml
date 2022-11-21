@@ -156,17 +156,17 @@ stages:
   #         script: 'terraform apply -var region=$(region) -var access_key=$(access_key) -var secret_key=$(secret_key) --auto-approve -no-color'
   #         workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
   #       displayName: "Terraform apply"
-      - task: PowerShell@2
-        displayName: 'Delete API Key'
-        inputs:
-          targetType: 'inline'
-          script: |
-            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
-            -WorkspaceId $(workspace) `
-            -ProfileName $(profile) `
-            -Region $(region) -Force
-        condition: always()
-        continueOnError: true
+      # - task: PowerShell@2
+      #   displayName: 'Delete API Key'
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       Remove-MGRFWorkspaceApiKey -KeyName "automation" `
+      #       -WorkspaceId $(workspace) `
+      #       -ProfileName $(profile) `
+      #       -Region $(region) -Force
+      #   condition: always()
+      #   continueOnError: true
       - task: PowerShell@2
         displayName: 'Remove AWS Credentials'
         inputs:
