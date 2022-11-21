@@ -83,14 +83,14 @@ stages:
           script: |
             Write-Host "Value of the key is $(api_key) and workspace is $(workspace)"
             $Content = "grafana_workspace_auth = `"$(api_key)`" `ngrafana_workspace_url = `"$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
-            $Content | Out-File variables.tfvars
+            $Content | Out-File terraform.tfvars
           workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
       - task: PowerShell@2
         displayName: 'Read file'
         inputs:
           targetType: 'inline'
           script: |
-            Get-Content -Path .\variables.tfvars
+            Get-Content -Path .\terraform.tfvars
           workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
       - task: PowerShell@2
         inputs:
