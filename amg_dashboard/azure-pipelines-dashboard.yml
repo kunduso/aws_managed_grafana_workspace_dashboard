@@ -77,7 +77,7 @@ stages:
               -Region $(region) `
               -ProfileName $(profile)).Key
               # Write-Host "##vso[task.setvariable variable=api_key]$apikey"
-              $Content = "grafana_workspace_auth = `"$(apikey)`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
+              $Content = "grafana_workspace_auth = `"$apikey`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
               $Content | Out-File terraform.tfvars
       # - task: PowerShell@2
       #   displayName: 'Write variables into file'
