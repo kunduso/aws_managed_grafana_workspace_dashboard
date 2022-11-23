@@ -55,7 +55,6 @@ stages:
               -WorkspaceId $(workspace) `
               -Region $(region) `
               -ProfileName $(profile)).Key
-              # Write-Host "##vso[task.setvariable variable=api_key]$apikey"
               $Content = "grafana_workspace_auth = `"$apikey`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
               $Content | Out-File terraform.tfvars
       - task: PowerShell@2
@@ -92,60 +91,57 @@ stages:
           script: 'terraform plan -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_dashboard'
         displayName: Terraform plan
-  # - stage: grafana_dashboard_deploy
-  #   displayName: Deploy Amazon Managed Grafana dashboard
-  #   jobs:
-  #   - job: initialize
-  #     displayName: Initialize Terraform
-  #     pool:
-  #       vmImage: ubuntu-latest
-  #     steps:
-  #     - task: Bash@3
-  #       inputs:
-  #         targetType: 'inline'
-  #         script: 'pip install checkov'
-  #       displayName: Install checkov
-  #     - task: Bash@3
-  #       inputs:
-  #         targetType: 'inline'
-  #         workingDirectory: $(System.DefaultWorkingDirectory)/amg_workspace
-  #         script: 'checkov -d . -o junitxml > scan-result.xml'
-  #       displayName: Checkov source code scan
-  #       continueOnError: true
-  #     - task: PublishTestResults@2
-  #       inputs:
-  #         testResultsFormat: 'JUnit'
-  #         searchFolder: '$(System.DefaultWorkingDirectory)/amg_workspace'
-  #         testResultsFiles: '**/*scan-result.xml'
-  #         mergeTestResults: false
-  #         testRunTitle: Terraform source code scan
-  #         failTaskOnFailedTests: false
-  #         publishRunAttachments: true
-  #       displayName: Publish Test Result
-  #   - job: approve
-  #     dependsOn: initialize
-  #     condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
-  #     pool: server
-  #     displayName: Wait for approval
-  #     steps:
-  #     - task: ManualValidation@0
-  #       timeoutInMinutes: 15 # task times out in 15 mins
-  #       inputs:
-  #         notifyUsers: skundu.dev@gmail.com
-  #         instructions: 'Please validate the build configuration and resume'
-  #         onTimeout: 'reject'
-  #   - job: apply
-  #     dependsOn: approve
-  #     pool:
-  #       vmImage: ubuntu-latest
-  #     displayName: Terraform apply
-  #     steps:
-  #     - task: PowerShell@2
-  #       inputs:
-  #         targetType: 'inline'
-  #         script: 'terraform init -backend-config="bucket=kunduso-terraform-remote-bucket" -backend-config="key=tf/managed-grafana/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
-  #         workingDirectory: '$(build.sourcesdirectory)/amg_workspace'
-  #       displayName: Terraform init
+
+    - job: approve
+      dependsOn: initialize
+      condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
+      pool: server
+      displayName: Wait for approval
+      steps:
+      - task: ManualValidation@0
+        timeoutInMinutes: 15 # task times out in 15 mins
+        inputs:
+          notifyUsers: skundu.dev@gmail.com
+          instructions: 'Please validate the build configuration and resume'
+          onTimeout: 'reject'
+
+    - job: apply
+      dependsOn: approve
+      pool:
+        vmImage: ubuntu-latest
+      displayName: Terraform apply
+      steps:
+      - task: PowerShell@2
+        displayName: 'Check and install AWS.Tools modules'
+        inputs:
+          filePath: '$(build.sourcesdirectory)/amg_dashboard/InstallAWSTools.ps1'
+      - task: PowerShell@2
+        displayName: 'Set AWS Credentials'
+        inputs:
+          targetType: 'inline'
+          script: 'Set-AWSCredential -AccessKey $(access_key) `
+                    -SecretKey $(secret_key) `
+                    -StoreAs $(profile)'
+      - task: PowerShell@2
+        displayName: 'Create API key'
+        inputs:
+          targetType: 'inline'
+          workingDirectory: $(System.DefaultWorkingDirectory)/amg_dashboard
+          script: |
+              $apikey= (New-MGRFWorkspaceApiKey -KeyName "automation" `
+              -KeyRole ADMIN `
+              -SecondsToLive 600 `
+              -WorkspaceId $(workspace) `
+              -Region $(region) `
+              -ProfileName $(profile)).Key
+              $Content = "grafana_workspace_auth = `"$apikey`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
+              $Content | Out-File terraform.tfvars
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" -backend-config="key=tf/managed-grafana/dashboard/terraform.tfstate" -backend-config="region=$(region)" -backend-config="access_key=$(access_key)" -backend-config="secret_key=$(secret_key)" -no-color'
+          workingDirectory: '$(build.sourcesdirectory)/amg_dashboard'
+        displayName: Terraform init
       - task: PowerShell@2
         inputs:  
           targetType: 'inline'
