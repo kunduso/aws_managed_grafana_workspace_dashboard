@@ -25,10 +25,10 @@ pool:
     vmImage: ubuntu-latest
 
 stages:
-  - stage: initialize
+  - stage: grafana_dashboard_deploy
     displayName: Initialize and Review
     jobs:
-    - job: 
+    - job: initialize
       pool:
         vmImage: ubuntu-latest
       steps:
