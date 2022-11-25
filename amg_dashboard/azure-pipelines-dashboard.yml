@@ -44,17 +44,6 @@ stages:
                     -SecretKey $(secret_key) `
                     -StoreAs $(profile)'
       - task: PowerShell@2
-        displayName: 'Delete API Key'
-        inputs:
-          targetType: 'inline'
-          script: |
-            Remove-MGRFWorkspaceApiKey -KeyName "automation" `
-            -WorkspaceId $(workspace) `
-            -ProfileName $(profile) `
-            -Region $(region) -Force
-        condition: always()
-        continueOnError: true
-      - task: PowerShell@2
         displayName: 'Create API key'
         inputs:
           targetType: 'inline'
