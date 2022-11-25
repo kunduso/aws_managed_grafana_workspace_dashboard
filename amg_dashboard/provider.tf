@@ -1,11 +1,12 @@
 terraform {
   required_providers {
     grafana = {
-      source = "grafana/grafana"
+      source  = "grafana/grafana"
       version = "1.30.0"
     }
   }
 }
 provider "grafana" {
-  # Configuration options
+  url  = var.grafana_workspace_url
+  auth = var.grafana_workspace_auth
 }
