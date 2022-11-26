@@ -24,6 +24,13 @@ resource "aws_iam_role" "assume" {
     ]
   })
 }
+#Attach role to policy
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment
+resource "aws_iam_policy_attachment" "gf_cw_policy_role" {
+  name       = "cloudwatch_attachment"
+  roles      = [aws_iam_role.assume.name]
+  policy_arn = aws_iam_policy.grafana_cw_policy.arn
+}
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/grafana_role_association
 resource "aws_grafana_role_association" "role" {
   role         = "ADMIN"
