@@ -2,10 +2,9 @@
 resource "grafana_data_source" "cloudwatch" {
   type = "cloudwatch"
   name = "cw-datasource"
-  json_data_encoded = jsonencode({
-    defaultRegion = "us-east-2"
-    authType      = "keys"
-  })
+  json_data {
+    default_region = "us-east-2"
+  }
 }
 #https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder
 resource "grafana_folder" "data" {
