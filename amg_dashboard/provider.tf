@@ -1,3 +1,4 @@
+#https://registry.terraform.io/providers/grafana/grafana/1.30.0
 terraform {
   required_providers {
     grafana = {
