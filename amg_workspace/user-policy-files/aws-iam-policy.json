@@ -2,23 +2,40 @@
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "PermissionsForGrafanaAndIAMIdentityCenter",
             "Effect": "Allow",
             "Action": [
                 "grafana:*",
+                "sso:AssociateProfile",
                 "sso:CreateManagedApplicationInstance",
-                "sso:DescribeRegisteredRegions",
                 "sso:DeleteManagedApplicationInstance",
+                "sso:DescribeRegisteredRegions",
+                "sso:DisassociateProfile",
                 "sso:GetManagedApplicationInstance",
-                "sso:ListProfiles",
                 "sso:GetProfile",
                 "sso:ListDirectoryAssociations",
-                "sso:ListProfileAssociations",
-                "sso:AssociateProfile",
-                "sso:DisassociateProfile"
+                "sso:ListProfiles",
+                "sso:ListProfileAssociations"
             ],
             "Resource": "*"
         },
         {
+            "Sid": "PermissionsToManagePolicy",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreatePolicy",
+                "iam:DeletePolicy",
+                "iam:GetPolicy",
+                "iam:GetPolicyVersion",
+                "iam:ListPolicyVersions",
+                "iam:AttachRolePolicy",
+                "iam:ListEntitiesForPolicy",
+                "iam:DetachRolePolicy"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "PermissionsToManageRole",
             "Effect": "Allow",
             "Action": [
                 "iam:GetRole",
