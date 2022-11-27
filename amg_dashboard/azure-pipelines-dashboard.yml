@@ -113,7 +113,7 @@ stages:
       dependsOn: initialize
       condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
       pool: server
-      displayName: Wait for approval
+      displayName: Review the output of terraform plan in the previous job and resume if the output is as desired. Else reject.
       steps:
       - task: ManualValidation@0
         timeoutInMinutes: 15 # task times out in 15 mins
