@@ -55,7 +55,8 @@ stages:
               -WorkspaceId $(workspace) `
               -Region $(region) `
               -ProfileName $(profile)).Key
-              $Content = "grafana_workspace_auth = `"$apikey`" `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
+              $Content = "grafana_workspace_auth = `"$apikey`" `
+              `ngrafana_workspace_url = `"https://$(workspace).grafana-workspace.us-east-2.amazonaws.com`""
               $Content | Out-File terraform.tfvars
       - task: PowerShell@2
         inputs:
@@ -117,7 +118,7 @@ stages:
       dependsOn: initialize
       condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
       pool: server
-      displayName: Review the output of terraform plan in the previous job and resume if the output is as desired. Else reject.
+      displayName: Review the output of terraform plan in the previous job.
       steps:
       - task: ManualValidation@0
         timeoutInMinutes: 15 # task times out in 15 mins
