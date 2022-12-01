@@ -63,9 +63,7 @@ stages:
           targetType: 'inline'
           script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" `
           -backend-config="key=tf/managed-grafana/dashboard/terraform.tfstate" `
-          -backend-config="region=$(region)" `
-          -backend-config="access_key=$(access_key)" `
-          -backend-config="secret_key=$(secret_key)" -no-color'
+          -backend-config="region=$(region)" -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_dashboard'
         displayName: Terraform init
       - task: Bash@3
