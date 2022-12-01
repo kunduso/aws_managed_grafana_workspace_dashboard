@@ -28,7 +28,7 @@ stages:
   - stage: grafana_dashboard_deploy
     displayName: Initialize and Review
     jobs:
-    - job: initialize
+    - job: Initialize
       pool:
         vmImage: ubuntu-latest
       steps:
@@ -63,6 +63,8 @@ stages:
           targetType: 'inline'
           script: 'terraform init -backend-config="bucket=terraform-remote-bucket-skundu" `
           -backend-config="key=tf/managed-grafana/dashboard/terraform.tfstate" `
+          -backend-config="access_key=$(access_key)" `
+          -backend-config="secret_key=$(secret_key)" `
           -backend-config="region=$(region)" -no-color'
           workingDirectory: '$(build.sourcesdirectory)/amg_dashboard'
         displayName: Terraform init
@@ -112,8 +114,8 @@ stages:
           script: 'Remove-AWSCredentialProfile -ProfileName $(profile) -Force'
         condition: always()
 
-    - job: approve
-      dependsOn: initialize
+    - job: review
+      dependsOn: Initialize
       condition: and (succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.SourceBranchName'], 'main'))
       pool: server
       displayName: Review the output of terraform plan in the previous job.
@@ -126,7 +128,7 @@ stages:
           onTimeout: 'reject'
 
     - job: apply
-      dependsOn: approve
+      dependsOn: review
       pool:
         vmImage: ubuntu-latest
       displayName: Terraform apply
