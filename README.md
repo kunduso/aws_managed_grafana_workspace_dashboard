@@ -1,5 +1,4 @@
-
-![](https://img.shields.io/badge/Amazon%20Managed%20Grafana%20Workspace-BuildStatus-informational) 
+[![](https://img.shields.io/badge/Amazon%20Managed%20Grafana%20Workspace-BuildStatus-informational)](./amg_workspace/)
 [![Build Status](https://littlecoding.visualstudio.com/Open-Project/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard?branchName=main)](https://littlecoding.visualstudio.com/Open-Project/_build/latest?definitionId=33&branchName=main)<br />
 <br />![](https://img.shields.io/badge/Amazon%20Managed%20Grafana%20Dashboard-BuildStatus-informational)
 [![Build Status](https://littlecoding.visualstudio.com/Open-Project/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard.dashboard?branchName=main)](https://littlecoding.visualstudio.com/Open-Project/_build/latest?definitionId=34&branchName=main)
