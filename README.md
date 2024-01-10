@@ -2,6 +2,8 @@
 [![Build Status](https://littlecoding.visualstudio.com/Open-Project/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard?branchName=main)](https://littlecoding.visualstudio.com/Open-Project/_build/latest?definitionId=33&branchName=main)<br />
 <br />[![](https://img.shields.io/badge/Amazon%20Managed%20Grafana%20Dashboard-BuildStatus-informational)](./amg_dashboard/)
 [![Build Status](https://littlecoding.visualstudio.com/Open-Project/_apis/build/status/kunduso.aws_managed_grafana_workspace_dashboard.dashboard?branchName=main)](https://littlecoding.visualstudio.com/Open-Project/_build/latest?definitionId=34&branchName=main)
+
+[![checkov-static-analysis-scan](https://github.com/kunduso/aws_managed_grafana_workspace_dashboard/actions/workflows/code-scan.yml/badge.svg?branch=main)](https://github.com/kunduso/aws_managed_grafana_workspace_dashboard/actions/workflows/code-scan.yml)
 ![Imange](https://skdevops.files.wordpress.com/2022/12/68-image-1-6.png)
 ## Motivation
 In this repository I have the source code to build an Amazon Managed Grafana workspace and dashboard using Terraform. The process is automated using Azure Pipelines.
