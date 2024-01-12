@@ -21,6 +21,7 @@ resource "aws_iam_policy" "grafana_cw_policy" {
                 "cloudwatch:GetMetricData",
                 "cloudwatch:GetInsightRuleReport"
             ],
+            #checkov:skip=CKV_AWS_355: This policy allows all cloudwatch logs
             "Resource": "*"
         },
         {
