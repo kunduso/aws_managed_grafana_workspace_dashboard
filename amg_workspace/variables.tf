@@ -16,3 +16,30 @@ variable "secret_key" {
   type        = string
   sensitive   = true
 }
+variable "display_name" {
+  description = "The user name to display. "
+  type        = string
+  default     = "display_name"
+}
+variable "user_name" {
+  description = "The user name to access the Amazon Managed Grafana workspace. "
+  type        = string
+  default     = "user_name"
+}
+variable "given_name" {
+  description = "The first name of the user name to access the Amazon Managed Grafana workspace. "
+  type        = string
+  default     = "given_name"
+}
+
+variable "family_name" {
+  description = "The family name of the user name to access the Amazon Managed Grafana workspace. "
+  type        = string
+  default     = "family_name"
+}
+
+variable "email" {
+  description = "The email of the user name to access the Amazon Managed Grafana workspace. "
+  type        = string
+  default     = "email@email.com"
+}
