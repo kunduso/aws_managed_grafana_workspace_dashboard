@@ -15,7 +15,12 @@
                 "sso:GetProfile",
                 "sso:ListDirectoryAssociations",
                 "sso:ListProfiles",
-                "sso:ListProfileAssociations"
+                "sso:ListProfileAssociations",
+                "sso:ListInstances",
+                "identitystore:CreateUser",
+                "identitystore:DescribeUser",
+                "identitystore:DeleteUser",
+                "identitystore:UpdateUser"
             ],
             "Resource": "*"
         },
