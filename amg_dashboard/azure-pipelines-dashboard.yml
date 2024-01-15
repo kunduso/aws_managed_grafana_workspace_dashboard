@@ -8,7 +8,7 @@ variables:
   - name: region
     value: 'us-east-2'
   - name: workspace
-    value: 'g-295a2eacac'
+    value: 'g-2cfb445889'
   - name: profile
     value: 'PSProfile'
 
