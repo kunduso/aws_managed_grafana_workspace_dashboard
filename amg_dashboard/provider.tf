@@ -1,9 +1,9 @@
-#https://registry.terraform.io/providers/grafana/grafana/1.30.0
+#https://registry.terraform.io/providers/grafana/grafana/2.8.1
 terraform {
   required_providers {
     grafana = {
       source  = "grafana/grafana"
-      version = "1.30.0"
+      version = "2.8.1"
     }
   }
 }
